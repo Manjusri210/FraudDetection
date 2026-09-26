@@ -1,0 +1,51 @@
+/* BADGES — FRAUD SHIELD AI DARK */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; font-size: 11px; font-weight: 600;
+  border-radius: var(--radius-full); border: 1px solid transparent;
+  line-height: 1.5; white-space: nowrap; letter-spacing: 0.02em;
+}
+.badge-sm { padding: 1px 6px; font-size: 10px; }
+.badge-lg { padding: 4px 10px; font-size: 12px; }
+
+/* Risk & Prediction */
+.badge-low, .badge-success, .badge-legitimate {
+  background: var(--success-bg); color: var(--success-text); border-color: var(--success-border);
+}
+.badge-medium, .badge-warning, .badge-suspicious {
+  background: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border);
+}
+.badge-high, .badge-danger, .badge-fraud {
+  background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border);
+}
+.badge-info, .badge-pending {
+  background: var(--info-bg); color: var(--info-text); border-color: var(--info-border);
+}
+.badge-neutral, .badge-reviewed {
+  background: var(--bg-elevated); color: var(--text-secondary); border-color: var(--border);
+}
+.badge-accent {
+  background: var(--accent-muted); color: var(--accent); border-color: var(--accent-border);
+}
+.badge-demo {
+  background: rgba(245,158,11,0.12); color: var(--warning-text);
+  border-color: var(--warning-border); letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* Dot */
+.status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.status-dot-success { background: var(--success); }
+.status-dot-warning { background: var(--warning); }
+.status-dot-danger { background: var(--danger); }
+.status-dot-info { background: var(--info); }
+.status-dot-neutral { background: var(--text-muted); }
+
+/* Risk Pill */
+.risk-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: var(--radius-full);
+  font-size: 12.5px; font-weight: 700; border: 1px solid transparent;
+}
+.risk-pill-low { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+.risk-pill-medium { background: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border); }
+.risk-pill-high { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
