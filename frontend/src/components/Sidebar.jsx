@@ -3,13 +3,14 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   ShieldCheck, LayoutDashboard, ScanSearch, Activity, Bell,
-  Network, Search, BarChart3, History, Cpu, Settings, LogOut, Zap
+  Network, Search, BarChart3, History, Cpu, Settings, LogOut, FileSpreadsheet
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'INTELLIGENCE', type: 'section' },
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/analyze', label: 'Analyze Transaction', icon: ScanSearch },
+  { path: '/batch', label: 'Batch Analysis', icon: FileSpreadsheet },
   { path: '/monitor', label: 'Live Monitor', icon: Activity },
   { path: '/alerts', label: 'Fraud Alerts', icon: Bell, badge: true },
   { label: 'INVESTIGATION', type: 'section' },

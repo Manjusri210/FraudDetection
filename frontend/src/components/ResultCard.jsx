@@ -189,6 +189,47 @@ const ResultCard = ({ result }) => {
           </div>
         </div>
       )}
+
+      {/* SHAP Explainability — only shown when ML service returns shap_values */}
+      {result.shap_values && result.shap_values.length > 0 && (
+        <div className="card" style={{ marginTop: '12px' }}>
+          <div className="card-header">
+            <div className="card-title">
+              <Info size={14} aria-hidden="true" /> SHAP Feature Attribution
+            </div>
+            <span style={{ fontSize: '10px', color: 'var(--accent)', fontWeight: 600, background: 'var(--accent-muted)', padding: '2px 7px', borderRadius: 'var(--radius-full)', border: '1px solid var(--accent-border)' }}>
+              REAL SHAP
+            </span>
+          </div>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+            <div style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              Each bar shows how much a feature pushed the fraud probability <span style={{ color: 'var(--danger-text)' }}>↑ up</span> or <span style={{ color: 'var(--success-text)' }}>↓ down</span> from the model baseline.
+            </div>
+            {result.shap_values.slice(0, 8).map((sv, i) => {
+              const absMax = Math.max(...result.shap_values.slice(0, 8).map(s => Math.abs(s.shap_value)), 0.01);
+              const pct = Math.abs(sv.shap_value) / absMax * 100;
+              const positive = sv.shap_value > 0;
+              const name = sv.feature.replace(/^(num__|cat__|onehotencoder__|standardscaler__)/, '').replace(/_/g, ' ');
+              return (
+                <div key={i}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px', gap: '8px' }}>
+                    <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)', fontWeight: 500, textTransform: 'capitalize', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</span>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: positive ? 'var(--danger-text)' : 'var(--success-text)', flexShrink: 0 }}>
+                      {positive ? '+' : ''}{sv.shap_value.toFixed(4)}
+                    </span>
+                  </div>
+                  <div className="progress-bar-wrapper">
+                    <div style={{ width: `${pct}%`, height: '100%', background: positive ? 'var(--danger)' : 'var(--success)', borderRadius: 'var(--radius-full)', transition: 'width 0.6s ease' }} />
+                  </div>
+                </div>
+              );
+            })}
+            <div style={{ fontSize: '10.5px', color: 'var(--text-dim)', marginTop: '4px', fontStyle: 'italic' }}>
+              Base value: {result.shap_base_value != null ? result.shap_base_value.toFixed(4) : 'N/A'} · Powered by SHAP TreeExplainer
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

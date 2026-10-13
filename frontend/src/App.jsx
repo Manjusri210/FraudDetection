@@ -17,8 +17,13 @@ import AlertsPage from './pages/AlertsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import ProfilePage from './pages/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
+import LiveMonitorPage from './pages/LiveMonitorPage';
+import FraudNetworkPage from './pages/FraudNetworkPage';
+import InvestigationPage from './pages/InvestigationPage';
+import ModelInsightsPage from './pages/ModelInsightsPage';
+import SettingsPage from './pages/SettingsPage';
+import BatchAnalyzePage from './pages/BatchAnalyzePage';
 
-// Redirect authenticated users away from public pages
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return null;
@@ -29,19 +34,26 @@ const PublicRoute = ({ children }) => {
 const AppContent = () => {
   return (
     <Routes>
-      {/* Public / Auth Pages (no sidebar) */}
+      {/* Public Pages */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
 
-      {/* Protected App Pages (sidebar + header shell) */}
+      {/* Protected App Pages */}
       <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/analyze" element={<AnalyzePage />} />
+        <Route path="/monitor" element={<LiveMonitorPage />} />
+        <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/network" element={<FraudNetworkPage />} />
+        <Route path="/investigate" element={<InvestigationPage />} />
+        <Route path="/investigate/:id" element={<InvestigationPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/transactions/:id" element={<TransactionDetailPage />} />
-        <Route path="/alerts" element={<AlertsPage />} />
+        <Route path="/batch" element={<BatchAnalyzePage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/model" element={<ModelInsightsPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
 

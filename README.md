@@ -1,183 +1,284 @@
-# Digital Fraud Detection System 🛡️⚡
+# Fraud Shield AI
+### *Detect Risk. Explain Decisions. Prevent Fraud.*
 
-An end-to-end, AI-powered **Real-Time Digital Fraud Detection** web application built using **React (Vite)**, **Node.js/Express**, **Python (Flask + Scikit-Learn)**, and **MongoDB**. The platform predicts transaction fraud risk, determines severity levels (`LOW`, `MEDIUM`, `HIGH`), and generates human-readable risk explanations.
-
----
-
-## 🚀 Key Features
-
-- **Real-Time ML Risk Assessment**: Submits transaction features (amount, account age, transaction frequency, failed attempts, device type, location anomaly, etc.) to a Random Forest classifier.
-- **Explainable AI (XAI)**: Generates explicit, human-understandable reasons for flagged transactions (e.g. "Amount is 4.2x higher than account average", "Multiple failed security attempts").
-- **Security Dashboard**: Visual metrics for Total Transactions, Legitimate vs Fraud Cases, Daily Volume Trends, and Risk Category Distributions.
-- **Interactive Transaction Analysis (`/analyze`)**: Custom multi-input transaction form with instant demo preset buttons ("Legitimate Demo", "High-Risk Fraud Demo").
-- **Alert Management Console (`/alerts`)**: Dedicated security alert feed for high-risk cases with review status tracking ("Mark as Reviewed").
-- **Transaction Audit History (`/transactions`)**: Full queryable table supporting keyword search, multi-factor filtering, sorting, and pagination.
-- **Analytics & Reporting (`/analytics`)**: Date window filters (Today, 7 Days, 30 Days, 3 Months, All Time) with breakdown charts by payment method and transaction type.
-- **JWT & Password Security**: Bcrypt password hashing, JWT bearer authorization, protected routes, session persistence, and security headers (Helmet).
-- **Responsive SaaS UI**: Dark Navy aesthetic optimized for desktop, tablet, and mobile browsers.
+> **ZERO ORIGIN 2026 — Round 2 Submission**  
+> AI-powered digital fraud detection and investigation platform with explainable ML, real-time monitoring, batch analysis, and an enterprise-grade dark cybersecurity UI.
 
 ---
 
-## 📐 Architecture & Technology Stack
+## Architecture
 
 ```
-                               ┌────────────────────────────────┐
-                               │     React Frontend (Vite)      │
-                               │  (React Router, Axios, Lucide) │
-                               └───────────────┬────────────────┘
-                                               │
-                                               │ REST API (JWT Auth)
-                                               ▼
-┌─────────────────────────┐    ┌────────────────────────────────┐
-│   MongoDB Database      │ ◄──┤    Node.js Express Backend     │
-│ (Users & Transactions)  │    │   (Mongoose, Bcrypt, Helmet)   │
-└─────────────────────────┘    └───────────────┬────────────────┘
-                                               │
-                                               │ HTTP POST /predict
-                                               ▼
-                               ┌────────────────────────────────┐
-                               │   Python ML Service (Flask)    │
-                               │ (Scikit-Learn Random Forest)   │
-                               └────────────────────────────────┘
-```
-
-| Component | Technology / Library |
-| :--- | :--- |
-| **Frontend** | React 18, Vite, React Router v6, Axios, Lucide React Icons |
-| **Backend** | Node.js v24, Express.js, Mongoose, JWT, BcryptJS, Helmet, Rate-Limit |
-| **ML Engine** | Python 3.11, Flask, Flask-CORS, Scikit-Learn, Pandas, NumPy, Joblib |
-| **Database** | MongoDB Server |
-
----
-
-## 📁 Project Structure
-
-```
-digital-fraud-detection/
-├── frontend/                 # React Vite Single Page App
-│   ├── src/
-│   │   ├── components/       # Navbar, Footer, StatsCard, ResultCard, CustomChart, RiskBadge
-│   │   ├── context/          # AuthContext (JWT & session state)
-│   │   ├── pages/            # Landing, Login, Register, Dashboard, Analyze, Transactions, Alerts, Analytics, Profile
-│   │   ├── services/         # Axios API instance with JWT interceptor
-│   │   ├── App.jsx           # Router configuration & protected routes
-│   │   └── main.jsx
-│   └── package.json
-│
-├── backend/                  # Node.js Express REST API
-│   ├── config/               # Database connection setup
-│   ├── controllers/          # Auth, Transaction, Analytics, Alert, Profile handlers
-│   ├── middleware/           # Auth protection middleware
-│   ├── models/               # User and Transaction Mongoose schemas
-│   ├── routes/               # API route definitions
-│   ├── seed.js               # Database demo seeder script
-│   ├── server.js             # Express app entrypoint
-│   └── package.json
-│
-├── ml-service/               # Python Flask ML Service
-│   ├── model/                # Saved fraud_model.joblib classifier
-│   ├── training/             # Scikit-Learn training pipeline script
-│   ├── app.py                # Flask REST API server (/health, /predict)
-│   ├── predict.py            # Prediction & explainability engine
-│   └── requirements.txt
-│
-├── dataset/                  # Synthetic training dataset generator
-│   └── generate_dataset.py
-│
-└── README.md
+┌─────────────────────────────────────────────────────────────────┐
+│          FRAUD SHIELD AI — SYSTEM ARCHITECTURE                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────────────────────────┐                           │
+│  │   React Frontend (Vite)          │  http://localhost:3000    │
+│  │   Dark cybersecurity UI          │                           │
+│  │   React Router v6 + Lucide Icons │                           │
+│  └──────────────┬───────────────────┘                           │
+│                 │  REST API /api/* (JWT Bearer)                  │
+│                 ▼                                               │
+│  ┌──────────────────────────────────┐                           │
+│  │   Node.js + Express Backend      │  http://localhost:5000    │
+│  │   JWT Auth + bcrypt + Helmet     │                           │
+│  │   Rate limiting + CORS           │                           │
+│  └──────┬─────────────┬─────────────┘                           │
+│         │             │                                          │
+│         ▼             ▼                                          │
+│  ┌──────────┐  ┌──────────────────────────────────┐            │
+│  │ MongoDB  │  │   Python Flask ML Service         │            │
+│  │ :27017   │  │   http://localhost:5001            │            │
+│  │ Mongoose │  │   Scikit-Learn Random Forest      │            │
+│  └──────────┘  │   SHAP TreeExplainer (optional)   │            │
+│                └──────────────────────────────────┘            │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## ⚙️ Environment Variables Setup
+## Features
 
-Create `.env` inside `backend/`:
-
-```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/fraud_detection
-JWT_SECRET=fraud_detection_secret_key_jwt_2026_secure
-ML_SERVICE_URL=http://127.0.0.1:5001
-NODE_ENV=development
-```
+| Feature | Status | Details |
+|---|---|---|
+| **Transaction Risk Analysis** | ✅ | Real ML prediction via Random Forest |
+| **SHAP Explainability** | ✅ | Per-prediction feature attributions (when SHAP available) |
+| **Fraud Risk Score** | ✅ | 0–100% probability + LOW/MEDIUM/HIGH classification |
+| **Rule-Based Fallback** | ✅ | Works without ML service (heuristic engine) |
+| **Batch CSV Analysis** | ✅ | Upload, validate, analyze up to 500 transactions, export results |
+| **Live Transaction Monitor** | ✅ | Simulated real-time stream with high-risk alerts |
+| **Fraud Network Graph** | ✅ | Interactive SVG visualization of account relationships |
+| **Investigation Center** | ✅ | Case list, detail view, mark reviewed, analyst notes |
+| **Model Insights** | ✅ | Real metrics, confusion matrix, feature importance, ROC-AUC |
+| **Analytics Dashboard** | ✅ | Trends, risk distribution, KPI cards |
+| **Demo Mode** | ✅ | 6 hackathon scenarios (Normal, High Fraud, Account Takeover, etc.) |
+| **JWT Authentication** | ✅ | Register, login, protected routes |
+| **Automated Tests (Python)** | ✅ | pytest test suite for ML service |
 
 ---
 
-## ⚡ Quick Start Guide
+## ML Model Performance
 
-### 1. Database & Seed Setup
-Ensure MongoDB server is running on `mongodb://127.0.0.1:27017/`.
+> ⚠️ **These metrics are from synthetic training data.** Real-world performance on actual financial transaction data will differ significantly.
 
-Run seed script to populate initial demo user and transactions:
+| Metric | Value | Notes |
+|---|---|---|
+| **Accuracy** | 96.2% | Misleading on imbalanced data — see below |
+| **Precision** | 60.0% | % of fraud flags that are real fraud |
+| **Recall** | 57.5% | % of actual frauds caught |
+| **F1 Score** | 58.7% | Harmonic mean of precision & recall |
+| **ROC-AUC** | 91.2% | Threshold-independent discrimination |
+| Algorithm | Random Forest (100 trees, max_depth=12) | |
+| Training samples | 4,000 | Stratified split 80/20 |
+| Class imbalance handling | `class_weight='balanced'` | |
+
+**Why accuracy can be misleading:** If 85% of transactions are legitimate, a model always predicting "Legitimate" achieves 85% accuracy without catching a single fraud. F1 Score and ROC-AUC are the proper metrics for fraud detection.
+
+---
+
+## Quick Start
+
+### Prerequisites
+- Node.js ≥ 18
+- Python 3.11
+- MongoDB (local, port 27017)
+
+### 1. Clone & Configure Backend
+
 ```bash
 cd backend
+cp ../.env.example .env
+# Edit .env — set your JWT_SECRET
 npm install
-node seed.js
+node server.js
 ```
 
-> **Demo User Credentials**:
-> - Email: `demo@frauddetection.com`
-> - Password: `Password123!`
+### 2. Train & Start ML Service
 
----
-
-### 2. Train & Launch ML Service
 ```bash
-# From project root
-python -m pip install -r ml-service/requirements.txt
-
-# Train Random Forest Classifier
-python ml-service/training/train_model.py
-
-# Start Flask ML REST API (Port 5001)
-python ml-service/app.py
+cd ml-service
+pip install -r requirements.txt
+# Train model (generates fraud_model.joblib + metrics.json)
+python training/train_model.py
+# Start Flask service
+python app.py
 ```
 
----
+### 3. Start Frontend
 
-### 3. Launch Backend API
-```bash
-cd backend
-npm run dev
-# Starts backend server on http://localhost:5000
-```
-
----
-
-### 4. Launch Frontend Web App
 ```bash
 cd frontend
 npm install
 npm run dev
-# Starts React app on http://localhost:3000
+# Open http://localhost:3000
+```
+
+### Demo Credentials
+
+```
+Email:    demo@frauddetection.com
+Password: Password123!
+```
+
+Or register a new account at `/register`.
+
+---
+
+## API Reference
+
+### Authentication
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login + receive JWT |
+| GET | `/api/auth/me` | Get current user profile |
+
+### Transactions
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/transactions/analyze` | Single transaction ML prediction |
+| POST | `/api/transactions/batch-analyze` | Batch analysis (up to 500 rows) |
+| GET | `/api/transactions` | List transactions (search, filter, paginate) |
+| GET | `/api/transactions/:id` | Get transaction detail |
+| DELETE | `/api/transactions/:id` | Delete transaction |
+
+### Analytics
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/analytics/summary` | KPI summary (range: today/7days/30days/3months) |
+| GET | `/api/analytics/trends` | Daily transaction volume trends |
+| GET | `/api/analytics/risk-distribution` | Risk breakdown by category |
+
+### Alerts
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/alerts` | List alerts (filter by reviewed status) |
+| PATCH | `/api/alerts/:id/review` | Mark alert as reviewed |
+
+### Model
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/model/metrics` | Model evaluation metrics (proxies Flask) |
+| GET | `/api/model/status` | ML service health + SHAP availability |
+| GET | `/api/health` | System health (DB + ML service status) |
+
+---
+
+## ML Service Endpoints
+
+Flask service running at `http://localhost:5001`:
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/health` | Model status + SHAP availability |
+| POST | `/predict` | Single transaction prediction + SHAP |
+| POST | `/predict/batch` | Batch prediction (array of transactions) |
+| GET | `/metrics` | Saved evaluation metrics (metrics.json) |
+
+---
+
+## Batch CSV Format
+
+Upload a CSV with these exact column headers:
+
+```
+amount,transactionType,accountAge,transactionFrequency,averageTransactionAmount,
+deviceType,location,ipAddress,paymentMethod,previousFraudHistory,failedAttempts
+```
+
+Use the **Download Template** button in the Batch Analysis page to get a pre-formatted template.
+
+**Limits:** Max 500 rows per upload, max 5 MB file size.
+
+---
+
+## Risk Scoring Logic
+
+```
+fraud_probability ≥ 65% → HIGH risk → FRAUD prediction
+fraud_probability 35–64% → MEDIUM risk → SUSPICIOUS prediction
+fraud_probability < 35% → LOW risk → LEGITIMATE prediction
+```
+
+The model applies `class_weight='balanced'` to handle the class imbalance inherent in fraud datasets. The 65% threshold (not the default 50%) was chosen to reduce false positives.
+
+---
+
+## Project Structure
+
+```
+FraudDetection/
+├── frontend/              # React + Vite frontend
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── context/       # Auth, Toast, Theme contexts
+│   │   ├── layouts/       # AppLayout with sidebar + header
+│   │   ├── pages/         # 14 page components
+│   │   ├── services/      # Axios API client
+│   │   └── styles/        # Dark cybersecurity CSS design system
+│   └── public/
+├── backend/               # Node.js + Express API
+│   ├── controllers/       # Request handlers
+│   ├── middleware/         # JWT auth, error handling
+│   ├── models/            # Mongoose schemas
+│   └── routes/            # API route definitions
+├── ml-service/            # Python Flask ML service
+│   ├── app.py             # Flask endpoints
+│   ├── predict.py         # FraudPredictor class + SHAP
+│   ├── model/             # fraud_model.joblib + metrics.json
+│   ├── training/          # train_model.py
+│   └── tests/             # pytest test suite
+└── dataset/               # Synthetic dataset generation
 ```
 
 ---
 
-## 🔌 API Endpoints Reference
+## Running Tests
 
-### Authentication
-- `POST /api/auth/register` - Create user account
-- `POST /api/auth/login` - Authenticate & obtain JWT
-- `GET /api/auth/me` - Fetch active user profile
+```bash
+# Python ML service tests
+cd FraudDetection
+python -m pytest ml-service/tests/test_predict.py -v
 
-### Transactions
-- `POST /api/transactions/analyze` - Analyze transaction via ML Engine & save result
-- `GET /api/transactions` - List transactions (Search, Filter, Sort, Paginate)
-- `GET /api/transactions/:id` - Fetch transaction details & risk factors
-- `DELETE /api/transactions/:id` - Delete transaction record
-
-### Analytics & Alerts
-- `GET /api/analytics/summary` - Aggregate metrics (Total, Fraud Rate, Average Amount)
-- `GET /api/analytics/trends` - Daily transaction volume & fraud trends
-- `GET /api/analytics/risk-distribution` - Risk breakdown by payment method & type
-- `GET /api/alerts` - List pending high-risk alerts
-- `PATCH /api/alerts/:id/review` - Update alert reviewed status
+# Expected output: ~20 tests covering model loading, prediction schema,
+# probability ranges, SHAP explainability, and metrics validation
+```
 
 ---
 
-## 📊 Limitations & Future Improvements
+## Known Limitations
 
-- **Real-Time Streaming**: Integrate Apache Kafka / Redis for sub-millisecond event streaming.
-- **SHAP / LIME Integration**: Expand feature explainability with SHAP value visual waterfall charts.
-- **Biometric Device Profiling**: Capture canvas fingerprinting and IP location geolocation APIs.
+1. **Synthetic data only** — Model trained on programmatically generated data. Performance on real-world financial transactions is unknown and likely lower.
+2. **SHAP availability** — SHAP requires pandas DLL access. On environments with strict Application Control policies, SHAP will fall back gracefully (predictions still work; SHAP values not returned).
+3. **Session-only notes** — Analyst notes in Investigation Center are not persisted to MongoDB in this version.
+4. **Frontend-only simulation** — Live Monitor and Fraud Network use demo/synthetic data; they do not stream real transactions.
+5. **Single-user context** — Analytics and transaction history are scoped to the logged-in user.
+
+---
+
+## Future Improvements
+
+- **Real transaction data** — Connect to a real payment processor sandbox (Stripe, Razorpay test mode)
+- **Persistent investigation notes** — Add notes field to Transaction schema
+- **Anomaly detection** — Add Isolation Forest for unsupervised pattern detection
+- **WebSocket streaming** — Real-time push for live monitor instead of polling
+- **Model retraining pipeline** — Automated retraining when new labeled data is available
+- **Role-based access** — Admin vs. Analyst vs. Read-only roles
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 18, Vite 5, React Router v6, Lucide React, Custom CSS |
+| Backend | Node.js 18, Express 4, Mongoose 8, JWT, bcrypt, Helmet |
+| Database | MongoDB (local) |
+| ML Service | Python 3.11, Flask 2.3, Scikit-Learn, Pandas, NumPy, SHAP |
+| ML Model | Random Forest Classifier (100 estimators, max_depth=12) |
+| Dev Tools | Vite, nodemon, pytest |
+
+---
+
+*Built for ZERO ORIGIN 2026 — Fraud Shield AI*

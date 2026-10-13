@@ -6,6 +6,7 @@ import { Menu, Bell, ChevronRight, Zap } from 'lucide-react';
 const PAGE_META = {
   '/dashboard': { title: 'Dashboard', breadcrumb: 'Intelligence Overview' },
   '/analyze': { title: 'Analyze Transaction', breadcrumb: 'AI Risk Analysis' },
+  '/batch': { title: 'Batch CSV Analysis', breadcrumb: 'Multi-Transaction Processing' },
   '/monitor': { title: 'Live Monitor', breadcrumb: 'Real-Time Transaction Stream' },
   '/alerts': { title: 'Fraud Alerts', breadcrumb: 'Security Incidents' },
   '/network': { title: 'Fraud Network', breadcrumb: 'Pattern Analysis' },

@@ -41,6 +41,7 @@ app.use('/api/transactions', require('./routes/transactionRoutes'));
 app.use('/api/analytics', require('./routes/analyticsRoutes'));
 app.use('/api/alerts', require('./routes/alertRoutes'));
 app.use('/api/profile', require('./routes/profileRoutes'));
+app.use('/api/model', require('./routes/modelRoutes'));
 app.use('/api', require('./routes/healthRoutes'));
 
 // 404 Route Handler
